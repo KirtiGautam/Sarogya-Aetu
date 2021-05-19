@@ -19,4 +19,4 @@ Run  ``` python vaccinator.py ``` and then follow on-screen instructions.
 
 - Install docker([here](https://docs.docker.com/engine/install/))
 - Run ```bash run_tests.sh```
-- Alternatively, run ```python test_vaccinator.py```
+- Alternatively, run ```pytest -vv```
