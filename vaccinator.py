@@ -46,42 +46,31 @@ def get_slots_by_pincode(pincode: int, date: str) -> list:
     return response.json()['sessions']
 
 
-def get_bangalore_vaccine_slots(date: str, pincodes: int) -> tuple:
+def get_bangalore_vaccine_slots(date: str, pincodes: int) -> list:
     '''
-    Returns the list of slots available in Bangalore region based on given date and list of pincodes
+    Returns the list of slots available in Bangalore region based on given date
     :param date: Date in DD-MM-YYYY format
     :param pincode: 6-digit Indian pincode
     '''
 
     # List to hold the data 
     schedules = []
-    # This list is used to hold the pincodes that are only belonging to Bangalore region
-    pins = [x for x in pincodes]
 
     for pincode in pincodes:
         if pincode not in bangalore_pincodes.pincodes:
             # If pincode is not in Bangalore region, we don't need to make the request
-            pins.remove(pincode)
             continue
         try:
             sessions = get_slots_by_pincode(pincode, date)
-            if sessions:
-                # If there are some sessions in the response we need to generate the data
-                for session in sessions:
-                    schedules.extend([{
-                        'Pincode': session['pincode'],
-                        'Name': session['name'],
-                        'Slot': slot} for slot in session['slots']])
-            else:
-                # If there are no sessions in the response, we set value as no slot
-                schedules.append({
+            for session in sessions:
+                schedules.extend([{
                     'Pincode': session['pincode'],
-                    'Name': 'No slot available',
-                    'Slot': '----'})
-        except requests.exceptions.Timeout or requests.exceptions.HTTPError:
+                    'Name': session['name'],
+                    'Slot': slot} for slot in session['slots']])            
+        except (requests.exceptions.Timeout, requests.exceptions.HTTPError) as e:
             pass
 
-    return schedules, pins
+    return schedules
 
 
 if __name__ == "__main__":
@@ -94,10 +83,10 @@ if __name__ == "__main__":
             date = input("Enter date(DD-MM-YYYY) of enquiry ---> ")
             pincodes = list(map(int, input(
                 "Enter space separated pincodes(eg.: 141010 562111) ---> ").strip().split()))
-            slots, pins = get_bangalore_vaccine_slots(date, pincodes)
+            slots = get_bangalore_vaccine_slots(date, pincodes)
             data = [x.values() for x in slots]
             print(
-                f'Slots available for pincodes - {pins} as follows for date {date}:')
+                f'Slots available for bangalore pincodes in {pincodes} are as follows for date {date}:')
             print(tabulate(data, table_headers, tablefmt="grid",
                   numalign="center", stralign="center"))
         except Exception as e:
