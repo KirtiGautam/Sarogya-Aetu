@@ -1,3 +1,4 @@
+from typing import List
 import requests
 from requests import sessions
 import bangalore.pincodes as bangalore_pincodes
@@ -46,11 +47,11 @@ def get_slots_by_pincode(pincode: int, date: str) -> list:
     return response.json()['sessions']
 
 
-def get_bangalore_vaccine_slots(date: str, pincodes: int) -> list:
+def get_bangalore_vaccine_slots(date: str, pincodes: List[int]) -> list:
     '''
     Returns the list of slots available in Bangalore region based on given date
     :param date: Date in DD-MM-YYYY format
-    :param pincode: 6-digit Indian pincode
+    :param pincodes: list of 6-digit Indian pincodes
     '''
 
     # List to hold the data 
