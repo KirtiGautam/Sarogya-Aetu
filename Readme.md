@@ -20,3 +20,8 @@ Run  ``` python vaccinator.py ``` and then follow on-screen instructions.
 - Install docker([here](https://docs.docker.com/engine/install/))
 - Run ```bash run_tests.sh```
 - Alternatively, run ```pytest -vv```
+
+## Setting up whatsapp notifications using call me bot (https://www.callmebot.com/blog/free-api-whatsapp-messages/)
+
+- Add ```MOBILES``` and ```KEYS``` (comma-separated in same order) in your environment variables
+- Run ```python notifier.py```

@@ -1,5 +1,3 @@
-from requests.exceptions import HTTPError, Timeout
-
 # Mock response object with no sessions
 no_resp = {
     "json": {

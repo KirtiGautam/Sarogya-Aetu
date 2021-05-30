@@ -1,5 +1,4 @@
 from tests_helper.common import no_resp, resp, expected_resp
-from requests.exceptions import Timeout
 
 error_resp = {
     "json": {},
